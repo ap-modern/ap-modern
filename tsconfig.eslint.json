@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "incremental": true,
+    "tsBuildInfoFile": ".eslintcache/tsconfig.tsbuildinfo"
+  },
+  "include": [
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "examples/**/*.ts",
+    "examples/**/*.tsx",
+    "scripts/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    "**/test/**",
+    "**/e2etest/**",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}
