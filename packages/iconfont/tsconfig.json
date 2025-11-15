@@ -1,11 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "jsx": "react-jsx",
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
     "tsBuildInfoFile": ".tsbuildinfo/tsconfig.tsbuildinfo"
   },
-  "include": ["src/**/*", "test/**/*"],
-  "exclude": ["node_modules", "dist", "e2etest"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "test", "e2etest"]
 }

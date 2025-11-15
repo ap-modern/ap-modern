@@ -84,6 +84,43 @@ importers:
         specifier: ^5.3.3
         version: 5.9.3
 
+  examples/icon-font:
+    dependencies:
+      '@aipt/iconfont':
+        specifier: workspace:*
+        version: link:../../packages/iconfont
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.66
+        version: 18.3.26
+      '@types/react-dom':
+        specifier: ^18.2.22
+        version: 18.3.7(@types/react@18.3.26)
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.7.0(vite@5.4.21(@types/node@20.19.25))
+      autoprefixer:
+        specifier: ^10.4.17
+        version: 10.4.22(postcss@8.5.6)
+      postcss:
+        specifier: ^8.4.33
+        version: 8.5.6
+      tailwindcss:
+        specifier: ^3.4.1
+        version: 3.4.18(yaml@2.8.1)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.0.11
+        version: 5.4.21(@types/node@20.19.25)
+
   examples/safe-api:
     dependencies:
       '@aipt/utils':
@@ -163,6 +200,43 @@ importers:
       vite:
         specifier: ^5.0.11
         version: 5.4.21(@types/node@20.19.25)
+
+  packages/iconfont:
+    dependencies:
+      classnames:
+        specifier: ^2.3.2
+        version: 2.5.1
+      react:
+        specifier: ^18.0.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.0.0
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@types/classnames':
+        specifier: ^2.3.4
+        version: 2.3.4
+      '@types/jest':
+        specifier: ^29.5.11
+        version: 29.5.14
+      '@types/node':
+        specifier: ^20.11.5
+        version: 20.19.25
+      '@types/react':
+        specifier: ^18.2.66
+        version: 18.3.26
+      '@types/react-dom':
+        specifier: ^18.2.22
+        version: 18.3.7(@types/react@18.3.26)
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@20.19.25)
+      ts-jest:
+        specifier: ^29.1.1
+        version: 29.4.5(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.5))(jest-util@29.7.0)(jest@29.7.0(@types/node@20.19.25))(typescript@5.9.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
 
   packages/tailwind:
     dependencies:
@@ -1210,6 +1284,10 @@ packages:
   '@types/babel__traverse@7.28.0':
     resolution: {integrity: sha512-8PvcXf70gTDZBgt9ptxJ8elBeBjcLOAcOtoO/mPJjtji1+CdGbHgm77om1GrsPxsiE+uXIpNSK64UYaIwQXd4Q==}
 
+  '@types/classnames@2.3.4':
+    resolution: {integrity: sha512-dwmfrMMQb9ujX1uYGvB5ERDlOzBNywnZAZBtOe107/hORWP05ESgU4QyaanZMWYYfd2BzrG78y13/Bju8IQcMQ==}
+    deprecated: This is a stub types definition. classnames provides its own type definitions, so you do not need this installed.
+
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
@@ -1753,6 +1831,9 @@ packages:
 
   class-validator@0.14.2:
     resolution: {integrity: sha512-3kMVRF2io8N8pY1IFIXlho9r8IPUUIfHe2hYVtiebvAzU2XeQFXTv+XI4WX+TnXmtwXMDcjngcpkiPM0O9PvLw==}
+
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
   clean-stack@2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
@@ -5726,6 +5807,10 @@ snapshots:
     dependencies:
       '@babel/types': 7.28.5
 
+  '@types/classnames@2.3.4':
+    dependencies:
+      classnames: 2.5.1
+
   '@types/estree@1.0.8': {}
 
   '@types/graceful-fs@4.1.9':
@@ -6308,6 +6393,8 @@ snapshots:
       '@types/validator': 13.15.8
       libphonenumber-js: 1.12.26
       validator: 13.15.23
+
+  classnames@2.5.1: {}
 
   clean-stack@2.2.0: {}
 

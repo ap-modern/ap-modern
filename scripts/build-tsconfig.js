@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * Script to build/validate tsconfig.build.json for all packages and examples
+ * Script to build/validate tsconfig.build.json for all packages
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, unlinkSync } from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { glob } from 'glob';
@@ -69,8 +69,8 @@ function getRelativePath(from, to) {
 async function buildTsconfigBuildJson() {
   console.log('Building tsconfig.build.json files...\n');
 
-  // Find all package.json files in packages and examples
-  const packagePaths = await glob(['packages/*/package.json', 'examples/*/package.json'], {
+  // Find all package.json files in packages
+  const packagePaths = await glob(['packages/*/package.json'], {
     cwd: rootDir,
     absolute: true,
   });
@@ -92,12 +92,6 @@ async function buildTsconfigBuildJson() {
     const tsconfigBuildPath = join(packageDir, 'tsconfig.build.json');
     const tsconfigPath = join(packageDir, 'tsconfig.json');
 
-    // Check if tsconfig.json exists
-    if (!existsSync(tsconfigPath)) {
-      console.log(`⚠️  Skipping ${packageDir}: tsconfig.json not found`);
-      continue;
-    }
-
     // Get dependencies
     const dependencies = getPackageDependencies(packagePath);
     const references = [];
@@ -115,12 +109,6 @@ async function buildTsconfigBuildJson() {
         }
       }
     }
-
-    // Determine if this is an example
-    const isExample = packagePath.includes('examples/');
-    // Examples don't need composite or declaration
-    const needsComposite = !isExample;
-    const needsDeclaration = !isExample;
 
     // Check if this package is referenced by other packages
     // If it is, its tsconfig.json must have composite: true (TypeScript requirement for references)
@@ -142,32 +130,20 @@ async function buildTsconfigBuildJson() {
     const existingTsBuildInfoFile = existingBuildConfig?.compilerOptions?.tsBuildInfoFile;
 
     // Build tsconfig.build.json
-    // Note: composite should always be true for non-example packages (build config uses project references)
     const tsconfigBuild = {
       extends: './tsconfig.json',
       compilerOptions: {
         outDir: './dist',
         rootDir: './src',
         noEmit: false,
-        // Preserve existing tsBuildInfoFile or use default for build config
         tsBuildInfoFile: existingTsBuildInfoFile || '.tsbuildinfo/tsconfig.build.tsbuildinfo',
-        // Always set composite for non-example packages (required for project references)
-        ...(needsComposite && { composite: true }),
-        // Set declaration/declarationMap if needed (for new files or if missing)
-        ...(needsDeclaration && {
-          declaration: true,
-          declarationMap: true,
-          sourceMap: true,
-        }),
+        composite: true,
+        declaration: true,
+        declarationMap: true,
+        sourceMap: true,
       },
       include: ['src/**/*'],
-      exclude: [
-        'node_modules',
-        'dist',
-        ...(isExample ? [] : ['test', 'e2etest']),
-        '**/*.test.ts',
-        '**/*.spec.ts',
-      ],
+      exclude: ['node_modules', 'dist', 'test', 'e2etest', '**/*.test.ts', '**/*.spec.ts'],
       ...(references.length > 0 && { references }),
     };
 
