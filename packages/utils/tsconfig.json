@@ -5,11 +5,11 @@
     "emitDecoratorMetadata": true,
     "useDefineForClassFields": true,
     "strictPropertyInitialization": false,
-    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
-    "tsBuildInfoFile": ".tsbuildinfo/tsconfig.tsbuildinfo"
+    "tsBuildInfoFile": ".tsbuildinfo/tsconfig.tsbuildinfo",
+    "composite": true
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist", "e2etest"]

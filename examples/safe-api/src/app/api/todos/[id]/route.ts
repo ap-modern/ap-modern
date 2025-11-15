@@ -5,7 +5,7 @@ import type { Todo } from '../route';
 // GET /api/todos/[id] - Get a single todo
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const todos = (await storage.getItem('todos')) || [];
+    const todos: Todo[] = (await storage.getItem('todos')) || [];
     const todo = todos.find((t) => t.id === params.id);
 
     if (!todo) {
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const body = await request.json();
-    const todos = (await storage.getItem('todos')) || [];
+    const todos: Todo[] = (await storage.getItem('todos')) || [];
     const index = todos.findIndex((t) => t.id === params.id);
 
     if (index === -1) {
@@ -47,7 +47,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 // DELETE /api/todos/[id] - Delete a todo
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const todos = (await storage.getItem('todos')) || [];
+    const todos: Todo[] = (await storage.getItem('todos')) || [];
     const filteredTodos = todos.filter((t) => t.id !== params.id);
 
     if (filteredTodos.length === todos.length) {

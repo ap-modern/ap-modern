@@ -122,6 +122,19 @@ async function buildTsconfigBuildJson() {
     const needsComposite = !isExample;
     const needsDeclaration = !isExample;
 
+    // Check if this package is referenced by other packages
+    // If it is, its tsconfig.json must have composite: true (TypeScript requirement for references)
+    let isReferenced = false;
+    for (const [otherPackagePath, otherPackageName] of packageMap.entries()) {
+      if (otherPackagePath === packagePath) continue;
+      const otherPackageDeps = getPackageDependencies(otherPackagePath);
+      const currentPackageName = getPackageNameFromPath(packagePath);
+      if (currentPackageName && otherPackageDeps.includes(currentPackageName)) {
+        isReferenced = true;
+        break;
+      }
+    }
+
     // Read existing tsconfig.build.json if it exists to preserve tsBuildInfoFile
     const existingBuildConfig = existsSync(tsconfigBuildPath)
       ? readJsonFile(tsconfigBuildPath)
@@ -129,8 +142,7 @@ async function buildTsconfigBuildJson() {
     const existingTsBuildInfoFile = existingBuildConfig?.compilerOptions?.tsBuildInfoFile;
 
     // Build tsconfig.build.json
-    // Note: composite, declaration, declarationMap will be inherited from tsconfig.json
-    // Only set them if this is a new file and they are needed
+    // Note: composite should always be true for non-example packages (build config uses project references)
     const tsconfigBuild = {
       extends: './tsconfig.json',
       compilerOptions: {
@@ -139,16 +151,14 @@ async function buildTsconfigBuildJson() {
         noEmit: false,
         // Preserve existing tsBuildInfoFile or use default for build config
         tsBuildInfoFile: existingTsBuildInfoFile || '.tsbuildinfo/tsconfig.build.tsbuildinfo',
-        // Only set composite/declaration if creating new file and needed
-        ...(!existingBuildConfig && needsComposite && { composite: true }),
-        ...(!existingBuildConfig &&
-          needsDeclaration && {
-            declaration: true,
-            declarationMap: true,
-            sourceMap: true,
-          }),
-        // Always set sourceMap if creating new file
-        ...(!existingBuildConfig && { sourceMap: true }),
+        // Always set composite for non-example packages (required for project references)
+        ...(needsComposite && { composite: true }),
+        // Set declaration/declarationMap if needed (for new files or if missing)
+        ...(needsDeclaration && {
+          declaration: true,
+          declarationMap: true,
+          sourceMap: true,
+        }),
       },
       include: ['src/**/*'],
       exclude: [
@@ -160,6 +170,28 @@ async function buildTsconfigBuildJson() {
       ],
       ...(references.length > 0 && { references }),
     };
+
+    // Ensure tsconfig.json has correct composite setting:
+    // - If this package is referenced by others, it MUST have composite: true (TypeScript requirement)
+    // - If this package references others, it should NOT have composite (uses paths instead)
+    const tsconfig = readJsonFile(tsconfigPath);
+    let tsconfigNeedsUpdate = false;
+    const currentComposite = tsconfig?.compilerOptions?.composite || false;
+
+    if (isReferenced && !currentComposite) {
+      // Package is referenced by others, must have composite: true
+      if (!tsconfig.compilerOptions) {
+        tsconfig.compilerOptions = {};
+      }
+      tsconfig.compilerOptions.composite = true;
+      tsconfigNeedsUpdate = true;
+      console.log(`✅ Adding composite to ${tsconfigPath} (package is referenced by others)`);
+    } else if (!isReferenced && currentComposite && references.length === 0) {
+      // Package is not referenced and doesn't reference others, remove composite
+      delete tsconfig.compilerOptions.composite;
+      tsconfigNeedsUpdate = true;
+      console.log(`⚠️  Removing composite from ${tsconfigPath} (not needed, uses paths instead)`);
+    }
 
     // Check if file exists and compare configurations
     const exists = existsSync(tsconfigBuildPath);
@@ -179,15 +211,23 @@ async function buildTsconfigBuildJson() {
         existingComposite !== newComposite ||
         existingTsBuildInfoFile !== newTsBuildInfoFile;
 
-      if (configChanged) {
-        writeJsonFile(tsconfigBuildPath, tsconfigBuild);
-        updated++;
-        console.log(`✅ Updated: ${tsconfigBuildPath}`);
+      if (configChanged || tsconfigNeedsUpdate) {
+        if (configChanged) {
+          writeJsonFile(tsconfigBuildPath, tsconfigBuild);
+          updated++;
+          console.log(`✅ Updated: ${tsconfigBuildPath}`);
+        }
+        if (tsconfigNeedsUpdate) {
+          writeJsonFile(tsconfigPath, tsconfig);
+        }
       }
     } else {
       writeJsonFile(tsconfigBuildPath, tsconfigBuild);
       created++;
       console.log(`✅ Created: ${tsconfigBuildPath}`);
+      if (tsconfigNeedsUpdate) {
+        writeJsonFile(tsconfigPath, tsconfig);
+      }
     }
   }
 

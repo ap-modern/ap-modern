@@ -7,7 +7,7 @@
     "strictPropertyInitialization": false,
     "noEmit": true,
     "tsBuildInfoFile": ".tsbuildinfo/tsconfig.tsbuildinfo",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
       "@aipt/utils": ["../../packages/utils/src"],
       "@aipt/ui": ["../../packages/ui/src"]

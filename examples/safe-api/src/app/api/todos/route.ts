@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10');
     const completed = searchParams.get('completed');
 
-    const todos = (await storage.getItem('todos')) || [];
+    const todos: Todo[] = (await storage.getItem('todos')) || [];
 
     let filteredTodos = todos;
 
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
 
-    const todos = (await storage.getItem('todos')) || [];
+    const todos: Todo[] = (await storage.getItem('todos')) || [];
 
     const newTodo: Todo = {
       id: Date.now().toString(),

@@ -22,7 +22,7 @@
     "gen": "./bin/gen.cjs"
   },
   "scripts": {
-    "build": "tsc --build tsconfig.json && bun run build:esm && bun run build:cjs",
+    "build": "tsc --build tsconfig.build.json && bun run build:esm && bun run build:cjs",
     "build:esm": "bun build ./src/index.ts --format esm --target node --minify --external @aipt/* --outfile ./dist/index.mjs",
     "build:cjs": "bun build ./src/index.ts --format cjs --target node --minify --external @aipt/* --outfile ./dist/index.cjs",
     "test": "jest",
