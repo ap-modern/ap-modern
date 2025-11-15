@@ -18,7 +18,7 @@
     "release": "semantic-release",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release-packages": "changeset publish",
+    "release-packages": "node scripts/publish-with-token.js",
     "version-bump": "node scripts/version-bump.js"
   },
   "devDependencies": {

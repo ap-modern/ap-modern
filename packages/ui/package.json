@@ -1,10 +1,10 @@
 {
-  "name": "@ap/ui",
+  "name": "@aipt/ui",
   "version": "0.0.1",
   "description": "UI components package",
   "type": "module",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
@@ -17,9 +17,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && bun run build:esm && bun run build:cjs",
-    "build:esm": "bun build ./src/index.ts --outdir ./dist --format esm --target node --minify --external @ap/*",
-    "build:cjs": "bun build ./src/index.ts --outdir ./dist --format cjs --target node --minify --external @ap/* --outfile ./dist/index.cjs",
+    "build": "tsc --build tsconfig.json && bun run build:esm && bun run build:cjs",
+    "build:esm": "bun build ./src/index.ts --format esm --target node --minify --external @aipt/* --outfile ./dist/index.mjs",
+    "build:cjs": "bun build ./src/index.ts --format cjs --target node --minify --external @aipt/* --outfile ./dist/index.cjs",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -36,9 +36,9 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@ap/utils": "workspace:*"
+    "@aipt/utils": "workspace:*"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

@@ -1,10 +1,10 @@
 {
-  "name": "@ap/utils",
+  "name": "@aipt/utils",
   "version": "0.0.1",
   "description": "Utility functions package",
   "type": "module",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
@@ -14,17 +14,28 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "bin",
+    "scripts"
   ],
+  "bin": {
+    "gen": "./bin/gen.cjs"
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && bun run build:esm && bun run build:cjs",
-    "build:esm": "bun build ./src/index.ts --outdir ./dist --format esm --target node --minify --external @ap/*",
-    "build:cjs": "bun build ./src/index.ts --outdir ./dist --format cjs --target node --minify --external @ap/* --outfile ./dist/index.cjs",
+    "build": "tsc --build tsconfig.json && bun run build:esm && bun run build:cjs",
+    "build:esm": "bun build ./src/index.ts --format esm --target node --minify --external @aipt/* --outfile ./dist/index.mjs",
+    "build:cjs": "bun build ./src/index.ts --format cjs --target node --minify --external @aipt/* --outfile ./dist/index.cjs",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix"
+  },
+  "dependencies": {
+    "localforage": "^1.10.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
@@ -34,6 +45,6 @@
     "typescript": "^5.3.3"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

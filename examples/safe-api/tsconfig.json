@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": true,
+    "strictPropertyInitialization": false,
+    "noEmit": true,
+    "tsBuildInfoFile": ".tsbuildinfo/tsconfig.tsbuildinfo",
+    "baseUrl": "./src",
+    "paths": {
+      "@aipt/utils": ["../../packages/utils/src"],
+      "@aipt/ui": ["../../packages/ui/src"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": ["src/**/*", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "dist", ".next"]
+}

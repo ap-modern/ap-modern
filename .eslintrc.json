@@ -31,5 +31,15 @@
     "import/namespace": "off",
     "import/no-duplicates": "off"
   },
-  "ignorePatterns": ["dist", "build", "node_modules", "coverage", "*.config.js", "**/*.d.ts"]
+  "ignorePatterns": [
+    "dist",
+    "build",
+    "node_modules",
+    "coverage",
+    "**/*.js",
+    "**/*.cjs",
+    "**/*.mjs",
+    "*.config.js",
+    "**/*.d.ts"
+  ]
 }

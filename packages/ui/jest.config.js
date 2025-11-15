@@ -4,7 +4,7 @@ export default {
   extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
-    '^@ap/utils$': '<rootDir>/../utils/src',
+    '^@aipt/utils$': '<rootDir>/../utils/src',
   },
   transform: {
     '^.+\\.tsx?$': [

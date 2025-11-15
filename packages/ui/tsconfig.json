@@ -1,13 +1,16 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "outDir": "./dist",
-    "rootDir": ".",
+    "tsBuildInfoFile": ".tsbuildinfo/tsconfig.tsbuildinfo",
     "baseUrl": "./src",
     "paths": {
-      "@ap/utils": ["../utils/src"]
+      "@aipt/utils": ["../utils/src"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "test", "e2etest"]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules", "dist", "e2etest"]
 }

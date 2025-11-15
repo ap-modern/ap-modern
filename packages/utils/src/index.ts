@@ -1,22 +1,5 @@
-/**
- * Utility functions package
- */
+// Request
+export * from './request';
 
-export function add(a: number, b: number): number {
-  return a + b;
-}
-
-export function subtract(a: number, b: number): number {
-  return a - b;
-}
-
-export function multiply(a: number, b: number): number {
-  return a * b;
-}
-
-export function divide(a: number, b: number): number {
-  if (b === 0) {
-    throw new Error('Division by zero is not allowed');
-  }
-  return a / b;
-}
+// Storage
+export * from './storage';

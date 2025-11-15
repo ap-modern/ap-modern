@@ -11,6 +11,7 @@ coverage
 dist
 build
 *.tsbuildinfo
+.npmrc
 
 # Misc
 .DS_Store
@@ -29,9 +30,11 @@ lerna-debug.log*
 
 # Vercel
 .vercel
+.next
 
 # Typescript
 *.tsbuildinfo
+.tsbuildinfo/
 
 # ESLint cache
 .eslintcache/

@@ -2,15 +2,13 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "allowJs": true,
     "checkJs": false,
     "strict": true,
     "noImplicitAny": false,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
@@ -25,9 +23,9 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@ap/utils": ["./packages/utils/src"],
-      "@ap/ui": ["./packages/ui/src"]
+      "@aipt/utils": ["./packages/utils/src"],
+      "@aipt/ui": ["./packages/ui/src"]
     }
   },
-  "exclude": ["node_modules", "dist", "build", "**/*.js", "**/test/**", "**/e2etest/**"]
+  "exclude": ["node_modules", "dist", "build", "**/*.js", "**/*.cjs", "**/*.mjs"]
 }

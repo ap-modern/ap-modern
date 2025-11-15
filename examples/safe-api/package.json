@@ -1,0 +1,32 @@
+{
+  "name": "@aipt/example-safe-api",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Safe API example with Next.js and auto-generated API client",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "gen": "gen --output-dirs=app:./src/lib/apis",
+    "gen:fetch": "node scripts/fetch-swagger.js && gen --output-dirs=app:./src/lib/apis"
+  },
+  "dependencies": {
+    "@aipt/utils": "workspace:*",
+    "@tanstack/react-query": "^5.17.0",
+    "class-validator": "^0.14.1",
+    "class-transformer": "^0.5.1",
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.3.3",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.0.4"
+  }
+}

@@ -39,7 +39,7 @@ function getPackageDependencies(packagePath) {
 
   const workspaceDeps = [];
   for (const [depName, depVersion] of Object.entries(deps)) {
-    if (depVersion === 'workspace:*' && depName.startsWith('@ap/')) {
+    if (depVersion === 'workspace:*' && depName.startsWith('@aipt/')) {
       workspaceDeps.push(depName);
     }
   }
@@ -122,22 +122,33 @@ async function buildTsconfigBuildJson() {
     const needsComposite = !isExample;
     const needsDeclaration = !isExample;
 
-    // Calculate extends path based on depth
-    const depth = packageDir.replace(rootDir, '').split(/[/\\]/).filter(Boolean).length;
-    const extendsPath = '../'.repeat(depth) + 'tsconfig.json';
+    // Read existing tsconfig.build.json if it exists to preserve tsBuildInfoFile
+    const existingBuildConfig = existsSync(tsconfigBuildPath)
+      ? readJsonFile(tsconfigBuildPath)
+      : null;
+    const existingTsBuildInfoFile = existingBuildConfig?.compilerOptions?.tsBuildInfoFile;
 
     // Build tsconfig.build.json
+    // Note: composite, declaration, declarationMap will be inherited from tsconfig.json
+    // Only set them if this is a new file and they are needed
     const tsconfigBuild = {
-      extends: extendsPath,
+      extends: './tsconfig.json',
       compilerOptions: {
         outDir: './dist',
         rootDir: './src',
-        ...(needsComposite && { composite: true }),
-        ...(needsDeclaration && {
-          declaration: true,
-          declarationMap: true,
-        }),
-        sourceMap: true,
+        noEmit: false,
+        // Preserve existing tsBuildInfoFile or use default for build config
+        tsBuildInfoFile: existingTsBuildInfoFile || '.tsbuildinfo/tsconfig.build.tsbuildinfo',
+        // Only set composite/declaration if creating new file and needed
+        ...(!existingBuildConfig && needsComposite && { composite: true }),
+        ...(!existingBuildConfig &&
+          needsDeclaration && {
+            declaration: true,
+            declarationMap: true,
+            sourceMap: true,
+          }),
+        // Always set sourceMap if creating new file
+        ...(!existingBuildConfig && { sourceMap: true }),
       },
       include: ['src/**/*'],
       exclude: [
@@ -150,7 +161,7 @@ async function buildTsconfigBuildJson() {
       ...(references.length > 0 && { references }),
     };
 
-    // Check if file exists
+    // Check if file exists and compare configurations
     const exists = existsSync(tsconfigBuildPath);
     if (exists) {
       const existing = readJsonFile(tsconfigBuildPath);
@@ -159,8 +170,16 @@ async function buildTsconfigBuildJson() {
       const newRefs = JSON.stringify(references);
       const existingComposite = existing?.compilerOptions?.composite || false;
       const newComposite = tsconfigBuild.compilerOptions?.composite || false;
+      const existingTsBuildInfoFile = existing?.compilerOptions?.tsBuildInfoFile;
+      const newTsBuildInfoFile = tsconfigBuild.compilerOptions.tsBuildInfoFile;
 
-      if (existingRefs !== newRefs || existingComposite !== newComposite) {
+      // Check if any important config changed
+      const configChanged =
+        existingRefs !== newRefs ||
+        existingComposite !== newComposite ||
+        existingTsBuildInfoFile !== newTsBuildInfoFile;
+
+      if (configChanged) {
         writeJsonFile(tsconfigBuildPath, tsconfigBuild);
         updated++;
         console.log(`✅ Updated: ${tsconfigBuildPath}`);

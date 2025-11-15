@@ -20,8 +20,8 @@
     // ✅ Includes paths mapping for referencing source code
     "baseUrl": ".",
     "paths": {
-      "@ap/utils": ["./packages/utils/src"],
-      "@ap/ui": ["./packages/ui/src"]
+      "@aipt/utils": ["./packages/utils/src"],
+      "@aipt/ui": ["./packages/ui/src"]
     },
     // ✅ Includes declaration (for IDE type hints)
     "declaration": true,
@@ -69,7 +69,7 @@
 ```
 Developer writes code
     ↓
-import { add } from '@ap/utils'  // Maps to source via paths
+import { add } from '@aipt/utils'  // Maps to source via paths
     ↓
 ESLint check (using tsconfig.json)
     ↓
@@ -114,8 +114,8 @@ bun build (bundle each package independently)
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@ap/utils": ["./packages/utils/src"],
-      "@ap/ui": ["./packages/ui/src"]
+      "@aipt/utils": ["./packages/utils/src"],
+      "@aipt/ui": ["./packages/ui/src"]
     }
   }
 }
@@ -123,7 +123,7 @@ bun build (bundle each package independently)
 
 **How It Works:**
 
-1. During development, `import { add } from '@ap/utils'` maps to `./packages/utils/src` via `paths`
+1. During development, `import { add } from '@aipt/utils'` maps to `./packages/utils/src` via `paths`
 2. ESLint uses `tsconfig.json` for type checking
 3. TypeScript can resolve type definitions in source code
 4. ✅ ESLint won't report "Cannot resolve module" errors
@@ -150,12 +150,12 @@ bun build (bundle each package independently)
 **Build Process:**
 
 1. `tsc -p tsconfig.build.json`: Generate type definitions (`.d.ts`)
-2. `bun build --external @ap/*`: Exclude workspace dependencies during bundling
+2. `bun build --external @aipt/*`: Exclude workspace dependencies during bundling
 3. Each package independently generates `dist/index.js` and `dist/index.cjs`
 
 **Key Points:**
 
-- ✅ Uses `--external @ap/*` during bundling, won't bundle dependency source code
+- ✅ Uses `--external @aipt/*` during bundling, won't bundle dependency source code
 - ✅ Runtime resolves dependencies via npm workspace mechanism
 - ✅ Each package is an independent build artifact
 
@@ -342,10 +342,10 @@ tsconfig.eslint.json (optional, ESLint optimization)
 ```
 Developer writes code
     ↓
-import { add } from '@ap/utils'
+import { add } from '@aipt/utils'
     ↓
 TypeScript resolves via paths
-    ├── @ap/utils → ./packages/utils/src
+    ├── @aipt/utils → ./packages/utils/src
     └── Finds type definitions in source code
     ↓
 ESLint type checking (using tsconfig.json)
@@ -372,7 +372,7 @@ tsc -b packages/ui/tsconfig.build.json
     └── Generates .tsbuildinfo files
     ↓
 bun build (independent bundling)
-    ├── --external @ap/* (excludes workspace dependencies)
+    ├── --external @aipt/* (excludes workspace dependencies)
     └── Generates dist/index.js and dist/index.cjs
 ```
 
